@@ -19,7 +19,7 @@ export class FondosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.fondosService.findOne(+id);
+    return this.fondosService.findOne(id);
   }
 
   @Patch(':id')

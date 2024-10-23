@@ -47,8 +47,15 @@ export class UsuariosService {
     return this.usuariosModel.findById(id);
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+   async update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
+    const transacion = await this.usuariosModel.findById(id);
+    if (!transacion)
+      throw new UnauthorizedException(
+        `No se encontro esa transacción con id ${id}`,
+      );
+
+    await transacion.updateOne(updateUsuarioDto);
+    return {...transacion.toJSON(), ...updateUsuarioDto};
   }
 
   remove(id: number) {

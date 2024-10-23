@@ -15,10 +15,10 @@ export class Transacione extends Document {
   fecha_creacion: Date;
   @Prop({ required: true, enum: ['Apertura', 'Cancelación'] })
   tipo_accion: string;
-  @Prop([{ type:  Types.ObjectId, ref: Fondo?.name }]) // Un Objecto de referencias a la colección "Fondos"
-  fondo: Types.ObjectId[];
-  @Prop([{ type:  Types.ObjectId, ref: Usuario?.name }]) // Un Objecto de referencias a la colección "Usuario"
-  usuario: Types.ObjectId[];
+  @Prop({ type:  Types.ObjectId, ref: Fondo?.name }) // Un Objecto de referencias a la colección "Fondos"
+  fondo: Types.ObjectId;
+  @Prop({ type:  Types.ObjectId, ref: Usuario?.name }) // Un Objecto de referencias a la colección "Usuario"
+  usuario: Types.ObjectId;
 }
 
-export const UsuarioSchema = SchemaFactory.createForClass(Transacione);
+export const TransacionesSchema = SchemaFactory.createForClass(Transacione);

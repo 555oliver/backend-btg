@@ -4,8 +4,7 @@ import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
 @Schema()
 export class Fondo extends Document {
-  @Prop({ type: Types.ObjectId })
-  _id: Types.ObjectId;
+
   @Prop({
     required: true,
     index: true,

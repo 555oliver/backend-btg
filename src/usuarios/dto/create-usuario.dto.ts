@@ -9,10 +9,10 @@ export class CreateUsuarioDto {
   @MinLength(5)
   correo: string;
   @IsInt()
-  @Min(1)
+  @Min(500000, {message: 'El monto inicial para empezar debe ser mayor a $500.000'})
   monto: number;
   @IsString()
-  @MinLength(5)
+  @MinLength(5, {message: 'La Contraseña debe ser mayor a 5 caracteres'})
   password: string;
   @IsArray()
   fondos: string[]

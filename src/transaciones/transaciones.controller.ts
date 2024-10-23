@@ -19,12 +19,12 @@ export class TransacionesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.transacionesService.findOne(+id);
+    return this.transacionesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTransacioneDto: UpdateTransacioneDto) {
-    return this.transacionesService.update(+id, updateTransacioneDto);
+    return this.transacionesService.update(id, updateTransacioneDto);
   }
 
   @Delete(':id')

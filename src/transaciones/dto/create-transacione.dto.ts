@@ -9,8 +9,8 @@ export class CreateTransacioneDto {
     readonly fecha_creacion?: Date;
     @IsString()
     tipo_accion: string;
-    @IsArray()
-    fondo: string[];
-    @IsArray()
-    usuario: string[];
+    @IsString()
+    fondo: string;
+    @IsString()
+    usuario: string;
 }

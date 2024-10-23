@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { TransacionesService } from './transaciones.service';
 import { TransacionesController } from './transaciones.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Transacione, UsuarioSchema } from './entities/transacione.entity';
+import { Transacione, TransacionesSchema } from './entities/transacione.entity';
+import { Fondo, FondoSchema } from 'src/fondos/entities/fondo.entity';
 
 @Module({
   controllers: [TransacionesController],
@@ -11,7 +12,11 @@ import { Transacione, UsuarioSchema } from './entities/transacione.entity';
     MongooseModule.forFeature([
       {
         name: Transacione.name,
-        schema: UsuarioSchema
+        schema: TransacionesSchema
+      },
+      {
+        name: Fondo.name,
+        schema: FondoSchema
       }
     ])
   ]

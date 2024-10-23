@@ -24,8 +24,8 @@ export class FondosService {
     return this.fondosModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fondo`;
+  findOne(id: string) {
+    return this.fondosModel.findById(id);
   }
 
   update(id: number, updateFondoDto: UpdateFondoDto) {
