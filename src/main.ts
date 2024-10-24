@@ -12,9 +12,9 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: 'http://localhost:4200', // Cambia esto por la URL de tu frontend (Angular)
+    origin: '*', // Cambia esto por la URL de tu frontend (Angular)
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
   });
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 'PORT');
 }
 bootstrap();

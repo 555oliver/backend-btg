@@ -1,5 +1,4 @@
-import { isEmail, IsEmail, IsInt, IsString, MaxLength, Min, MinLength } from 'class-validator';
-import { Fondo } from 'src/fondos/entities/fondo.entity';
+import { IsEmail,  IsString, MaxLength, Min, MinLength } from 'class-validator';
 
 export class LoginUsuarioDto {
   @IsString()

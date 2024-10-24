@@ -1,0 +1,392 @@
+{
+  "C:\\Users\\user\\Desktop\\BTG challanger\\btg-backend": {
+    "versionSfCore": null,
+    "versionFramework": "4.4.7",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeResolverProviders": {
+      "default-aws-credential-resolver": "<REDACTED>"
+    },
+    "composeServiceName": null,
+    "servicePath": "C:\\Users\\user\\Desktop\\BTG challanger\\btg-backend",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "backend-btg",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs16.x",
+        "architecture": "arm64",
+        "stage": "production",
+        "region": "us-east-2",
+        "memorySize": 2048,
+        "logRetentionInDays": 1,
+        "timeout": 15,
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ApiLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/backend-btg-production-api",
+                "RetentionInDays": 1
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "backend-btg",
+                          "production",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/backend-btg-production*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/backend-btg-production*:*:*"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "backend-btg",
+                      "production",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            },
+            "ApiLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-2-6e5f13f5-96d3",
+                  "S3Key": "serverless/backend-btg/production/1729787760461-2024-10-24T16:36:00.461Z/backend-btg.zip"
+                },
+                "Handler": "dist/lambda.handler",
+                "Runtime": "nodejs16.x",
+                "FunctionName": "backend-btg-production-api",
+                "MemorySize": 2048,
+                "Timeout": 15,
+                "Architectures": [
+                  "arm64"
+                ],
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "ApiLogGroup"
+              ]
+            },
+            "ApiLambdaVersionotFK36qZl7U72zzeGZmI33Ld66NLDm5cwmAsJCXN8w": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "ApiLambdaFunction"
+                },
+                "CodeSha256": "aUtvpfZdyuq9KvUQdBjEHBNvxlunDD6C3DWSu/wrf/Q="
+              }
+            },
+            "HttpApi": {
+              "Type": "AWS::ApiGatewayV2::Api",
+              "Properties": {
+                "Name": "production-backend-btg",
+                "ProtocolType": "HTTP"
+              }
+            },
+            "HttpApiStage": {
+              "Type": "AWS::ApiGatewayV2::Stage",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "StageName": "$default",
+                "AutoDeploy": true,
+                "DefaultRouteSettings": {
+                  "DetailedMetricsEnabled": false
+                }
+              }
+            },
+            "ApiLambdaPermissionHttpApi": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "HttpApi"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "HttpApiIntegrationApi": {
+              "Type": "AWS::ApiGatewayV2::Integration",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "PayloadFormatVersion": "2.0",
+                "TimeoutInMillis": 30000
+              }
+            },
+            "HttpApiRouteAnyApiV1ProxyVar": {
+              "Type": "AWS::ApiGatewayV2::Route",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "RouteKey": "ANY /api/v1/{proxy+}",
+                "Target": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "integrations",
+                      {
+                        "Ref": "HttpApiIntegrationApi"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "DependsOn": "HttpApiIntegrationApi"
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-us-east-2-6e5f13f5-96d3",
+              "Export": {
+                "Name": "sls-backend-btg-production-ServerlessDeploymentBucketName"
+              }
+            },
+            "ApiLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "ApiLambdaVersionotFK36qZl7U72zzeGZmI33Ld66NLDm5cwmAsJCXN8w"
+              },
+              "Export": {
+                "Name": "sls-backend-btg-production-ApiLambdaFunctionQualifiedArn"
+              }
+            },
+            "HttpApiId": {
+              "Description": "Id of the HTTP API",
+              "Value": {
+                "Ref": "HttpApi"
+              },
+              "Export": {
+                "Name": "sls-backend-btg-production-HttpApiId"
+              }
+            },
+            "HttpApiUrl": {
+              "Description": "URL of the HTTP API",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-backend-btg-production-HttpApiUrl"
+              }
+            }
+          }
+        },
+        "vpc": {}
+      },
+      "functions": {
+        "api": {
+          "handler": "dist/lambda.handler",
+          "events": [
+            {
+              "httpApi": {
+                "method": "ANY",
+                "path": "/api/v1/{proxy+}"
+              },
+              "resolvedMethod": "ANY",
+              "resolvedPath": "/api/v1/{proxy+}"
+            }
+          ],
+          "name": "backend-btg-production-api",
+          "package": {},
+          "memory": 2048,
+          "timeout": 15,
+          "runtime": "nodejs16.x",
+          "vpc": {},
+          "versionLogicalId": "ApiLambdaVersionotFK36qZl7U72zzeGZmI33Ld66NLDm5cwmAsJCXN8w"
+        }
+      },
+      "plugins": [
+        "serverless-jetpack",
+        "serverless-offline"
+      ]
+    },
+    "serviceRawFile": "service: backend-btg\r\n\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: nodejs16.x\r\n  architecture: arm64\r\n  stage: production\r\n  region: us-east-2\r\n  memorySize: 2048\r\n  logRetentionInDays: 1\r\n  timeout: 15\r\n  \r\n\r\nfunctions:\r\n  api:\r\n    handler: dist/lambda.handler\r\n    events:\r\n      - httpApi:\r\n          method: ANY\r\n          path: /api/v1/{proxy+}\r\n\r\nplugins:\r\n  - serverless-jetpack\r\n  - serverless-offline",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "error": null,
+    "params": {},
+    "machineId": "3bf88f612d1b51452eff40ebe7f82572",
+    "stage": "production",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "36401672-132d-48e3-981a-cc7f62ecd891",
+    "orgName": "setiprojects",
+    "userId": "w1GyjQ8L2xms50Yx2P",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "setiprojects",
+    "subscription": null,
+    "userEmail": "olivercharry@gmail.com",
+    "serviceProviderAwsRegion": "us-east-2",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "992382560327",
+    "projectType": "traditional",
+    "versionSf": "4.4.7",
+    "serviceProviderAwsCfStackName": "backend-btg-production",
+    "integrations": {},
+    "serviceUniqueId": "arn:aws:cloudformation:us-east-2:992382560327:stack/backend-btg-production/0682c360-921b-11ef-bde1-0237b38ff3f1",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-2:992382560327:stack/backend-btg-production/0682c360-921b-11ef-bde1-0237b38ff3f1",
+    "serviceProviderAwsCfStackCreated": "2024-10-24T15:17:04.447Z",
+    "serviceProviderAwsCfStackUpdated": "2024-10-24T16:36:19.247Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "ApiLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-2:992382560327:function:backend-btg-production-api:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-backend-btg-production-ApiLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "HttpApiId",
+        "OutputValue": "alti62wfe6",
+        "Description": "Id of the HTTP API",
+        "ExportName": "sls-backend-btg-production-HttpApiId"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-2-6e5f13f5-96d3",
+        "ExportName": "sls-backend-btg-production-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "HttpApiUrl",
+        "OutputValue": "https://alti62wfe6.execute-api.us-east-2.amazonaws.com",
+        "Description": "URL of the HTTP API",
+        "ExportName": "sls-backend-btg-production-HttpApiUrl"
+      }
+    ]
+  }
+}
