@@ -27,8 +27,4 @@ export class TransacionesController {
     return this.transacionesService.update(id, updateTransacioneDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.transacionesService.remove(+id);
-  }
 }

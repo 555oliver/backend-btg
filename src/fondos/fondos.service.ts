@@ -7,15 +7,14 @@ import { Fondo } from './entities/fondo.entity';
 
 @Injectable()
 export class FondosService {
-
   constructor(
     @InjectModel(Fondo.name)
-    private readonly fondosModel: Model<Fondo>
-  ){}
+    private readonly fondosModel: Model<Fondo>,
+  ) {}
 
-
- async create(createFondoDto: CreateFondoDto) {
-    createFondoDto.nombre_fondo = createFondoDto.nombre_fondo.toLocaleLowerCase();
+  async create(createFondoDto: CreateFondoDto) {
+    createFondoDto.nombre_fondo =
+      createFondoDto.nombre_fondo.toLocaleLowerCase();
     const fondos = await this.fondosModel.create(createFondoDto);
     return fondos;
   }
@@ -28,11 +27,4 @@ export class FondosService {
     return this.fondosModel.findById(id);
   }
 
-  update(id: number, updateFondoDto: UpdateFondoDto) {
-    return `This action updates a #${id} fondo`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} fondo`;
-  }
 }

@@ -2,9 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
+/**
+ * Squema de Fondos
+ */
 @Schema()
 export class Fondo extends Document {
-
   @Prop({
     required: true,
     index: true,

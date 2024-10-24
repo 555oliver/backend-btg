@@ -1,7 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+} from '@nestjs/common';
 import { FondosService } from './fondos.service';
 import { CreateFondoDto } from './dto/create-fondo.dto';
-import { UpdateFondoDto } from './dto/update-fondo.dto';
 
 @Controller('fondos')
 export class FondosController {
@@ -22,13 +27,4 @@ export class FondosController {
     return this.fondosService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFondoDto: UpdateFondoDto) {
-    return this.fondosService.update(+id, updateFondoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fondosService.remove(+id);
-  }
 }

@@ -58,7 +58,4 @@ export class UsuariosService {
     return {...transacion.toJSON(), ...updateUsuarioDto};
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
-  }
 }

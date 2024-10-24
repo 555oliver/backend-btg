@@ -4,7 +4,7 @@ import { UpdateTransacioneDto } from './dto/update-transacione.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Transacione } from './entities/transacione.entity';
 import { Model } from 'mongoose';
-import { log } from 'console';
+
 
 @Injectable()
 export class TransacionesService {
@@ -50,7 +50,4 @@ export class TransacionesService {
     return {...transacion.toJSON(), ...updateTransacioneDto};
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transacione`;
-  }
 }
